@@ -1,17 +1,26 @@
 import pygame, random
 from sys import exit
 
+pygame.font.init()
 pygame.init()
+
+pygame.mixer.init()
+pygame.mixer.music.load('sounds/background.wav')
+pygame.mixer.music.play(-1)
+
+eat_sound = pygame.mixer.Sound('sounds/eat.wav')
+death_sound = pygame.mixer.Sound("sounds/death.wav")
+
 screen = pygame.display.set_mode((860, 640))
 pygame.display.set_caption("SNAKE GAME")
 clock = pygame.time.Clock()
-
-
+font = pygame.font.Font(None, 36)
 
 cell = 20
 direction = None
 cols = 860 // cell
 rows = 640 // cell
+score = 0
 
 snake = [
     pygame.Rect(100, 100, cell, cell),
@@ -30,6 +39,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w and direction != 'down': direction = 'up'
@@ -52,21 +62,27 @@ while True:
     snake.insert(0, head)
     if snake[0].colliderect(apple):
         apple = random_pos()
+        score += 1  
+        eat_sound.play()
     else:
         snake.pop()
 
 
     if direction and len(snake) > 3:
         if any(snake[0].colliderect(seg) for seg in snake[1:]):
-            pygame.quit(); exit()
+            death_sound.play()
+            pygame.time.delay(1000)
+            pygame.quit(); 
+            exit()
 
 
     screen.fill("black")
-    pygame.draw.rect(screen, "blue", apple)
+    pygame.draw.rect(screen, "red", apple)
     for block in snake:
         pygame.draw.rect(screen, "green", block)
 
+    score_text = font.render(f"Score: {score}", True, (255,255,255))
+    screen.blit(score_text, (10, 10))
 
     pygame.display.update()
     clock.tick(10)
-    #111
