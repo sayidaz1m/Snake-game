@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, pygame_menu
 from sys import exit
 
 pygame.font.init()
@@ -29,6 +29,13 @@ snake = [
     pygame.Rect(60, 100, cell, cell)
 ]
 
+# Menu in progress
+def menu_start_game():
+    pass
+
+    menu = pygame_menu.Menu('Welcome', 400, 300,
+                       theme=pygame_menu.themes.THEME_BLUE)
+
 # Function to generate random position for apple
 def random_pos():
     return pygame.Rect(random.randrange(cols)*cell, random.randrange(rows)*cell, cell, cell)
@@ -40,7 +47,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w and direction != 'down': direction = 'up'
