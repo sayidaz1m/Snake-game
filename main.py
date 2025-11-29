@@ -29,7 +29,7 @@ snake = [
     pygame.Rect(60, 100, cell, cell)
 ]
 
-# Menu in progress 1
+# Menu in progress 2
 def menu_start_game():
     pass
 
